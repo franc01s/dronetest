@@ -20,8 +20,8 @@ steps:
         from_secret: registry_username
       password:
         from_secret: registry_password
-      registry: registry.its-k8s-dev.swatchgroup.net
-      repo: registry.its-k8s-dev.swatchgroup.net/common/dronetest
+      #registry: registry.its-k8s-dev.swatchgroup.net
+      repo: franc01s/dronetest
       dockerfile: ./Dockerfile
       insecure: true
       custom_dns: ['10.139.3.10','10.139.3.11']
