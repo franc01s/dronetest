@@ -23,7 +23,7 @@ steps:
       #registry: registry.its-k8s-dev.swatchgroup.net
       repo: franc01s/dronetest
       dockerfile: ./Dockerfile
-      insecure: true
+      insecure: false
       daemon_off: false
       debug: true
   - name: Kubernetes Update
