@@ -24,6 +24,8 @@ steps:
       repo: franc01s/dronetest
       dockerfile: ./Dockerfile
       insecure: true
+      daemon_off: false
+      debug: true
   - name: Kubernetes Update
     image: pelotech/drone-helm3
     settings:
