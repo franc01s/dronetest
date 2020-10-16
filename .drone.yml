@@ -24,7 +24,6 @@ steps:
       repo: franc01s/dronetest
       dockerfile: ./Dockerfile
       insecure: true
-      custom_dns: ['10.139.3.10','10.139.3.11']
   - name: Kubernetes Update
     image: pelotech/drone-helm3
     settings:
