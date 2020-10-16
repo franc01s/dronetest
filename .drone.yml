@@ -14,7 +14,7 @@ steps:
     commands:
       - echo $(awk -F ':' '{if ($1 == "appVersion") print $2}' dronetest-helm/Chart.yaml)>  .tags
   - name: docker
-    image: franc01s/docker:18.09.2
+    image: franc01s/docker:18.09.2-linux-arm64
     #image: plugins/docker
     settings:
       username:
