@@ -1,0 +1,8 @@
+version: '3.7'
+services:
+  flasktest:
+    build:
+      context: .
+    image: registry.its-k8s-dev.swatchgroup.net/common/dronetest:0.1.23
+
+

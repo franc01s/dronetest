@@ -1,0 +1,14 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  name:  {{ include "dronetest-helm.fullname" . }}
+data:
+  # Or set as complete file contents (even JSON!)
+  keys.yaml: |
+      clusters:
+        - name : ntxchbi009
+          type: PROD
+          desc: Cluster VDI Biel
+        - name : ntxchgr10
+          type: PROD
+          desc: Cluster VDI Grenchen

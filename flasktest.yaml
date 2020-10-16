@@ -1,0 +1,52 @@
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: flasktestsvc
+  namespace: default
+spec:
+  ports:
+    - name: http
+      targetPort: 5000
+      port: 5000
+  selector:
+    app: flasktest
+  type: NodePort
+---
+kind: Deployment
+apiVersion: apps/v1
+metadata:
+  name: flasktest
+  namespace: default
+  labels:
+    app: flasktest
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: flasktest
+  template:
+    metadata:
+      labels:
+        app: flasktest
+    spec:
+      nodeSelector:
+        beta.kubernetes.io/os: linux
+      imagePullSecrets:
+            - name: regcred
+      containers:
+        - name: flasktest
+          image: registry.its-k8s-dev.swatchgroup.net/common/flasktest
+          volumeMounts:
+            - mountPath: /config
+              name: test
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 5000
+          command: ["gunicorn"]
+          args: ["-w 1", "-b 0.0.0.0:5000" , "--forwarded-allow-ips='*'","run:app"]
+      volumes:
+        - name: test
+          configMap:
+            name: test

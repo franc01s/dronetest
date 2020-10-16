@@ -1,0 +1,7 @@
+clusters:
+  - name : ntxchbi009
+    type: PROD
+    desc: Cluster VDI Biel
+  - name : ntxchgr10
+    type: PROD
+    desc: Cluster VDI Grenchen XX

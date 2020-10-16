@@ -1,0 +1,40 @@
+---
+kind: pipeline
+name: Mechanics
+type: kubernetes
+
+clone:
+  disable: false
+  skip_verify: true
+
+
+steps:
+  - name: Retrieve tags
+    image: alpine
+    commands:
+      - echo $(awk -F ':' '{if ($1 == "appVersion") print $2}' dronetest-helm/Chart.yaml)>  .tags
+  - name: docker
+    image: plugins/docker
+    settings:
+      username:
+        from_secret: registry_username
+      password:
+        from_secret: registry_password
+      registry: registry.its-k8s-dev.swatchgroup.net
+      repo: registry.its-k8s-dev.swatchgroup.net/common/dronetest
+      dockerfile: ./Dockerfile
+      insecure: true
+      custom_dns: ['10.139.3.10','10.139.3.11']
+  - name: Kubernetes Update
+    image: pelotech/drone-helm3
+    settings:
+      helm_command: upgrade
+      namespace: dev
+      chart: "./dronetest-helm"
+      release: dronetest
+      api_server:
+        from_secret:  rancher_server
+      kubernetes_token:
+        from_secret: kubernetes_token
+      kubernetes_ca:
+        from_secret: kubernetes_ca

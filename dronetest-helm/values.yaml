@@ -1,0 +1,43 @@
+replicaCount: 1
+
+image:
+  repository: registry.its-k8s-dev.swatchgroup.net/common/dronetest
+  pullPolicy: IfNotPresent
+
+nameOverride: &name "dronetest"
+fullnameOverride: ""
+
+service:
+  type: NodePort
+  port: 5000
+
+annotations:
+  vault.hashicorp.com/agent-inject: "true"
+  vault.hashicorp.com/agent-inject-status: "update"
+  vault.hashicorp.com/log-level: "trace"
+  vault.hashicorp.com/tls-skip-verify: "true"
+  vault.hashicorp.com/role: "k8s"
+  vault.hashicorp.com/agent-inject-secret-.env: "secret/data/myapp/config"
+  vault.hashicorp.com/agent-inject-template-.env: |
+    {{- with secret "secret/data/myapp/config" -}}
+    USERNAME={{ .Data.data.USERNAME }}
+    PASSWORD={{ .Data.data.PASSWORD }}
+    {{- end -}}
+
+serviceAccount:
+  create: yes
+  name: *name
+
+ingress:
+  enabled: true
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: web
+    traefik.ingress.kubernetes.io/router.tls: "false"
+  hosts:
+    - host: dronetest.its-k8s-dev.swatchgroup.net
+      paths: ['/']
+  tls: []
+  #  - secretName: chart-example-tls
+  #    hosts:
+  #      - chart-example.local
+
